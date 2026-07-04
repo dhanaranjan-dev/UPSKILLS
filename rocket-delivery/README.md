@@ -1,123 +1,204 @@
-# 🚀 Rocket Delivery – Full Stack Grocery Delivery App
+# 🚀 Rocket Delivery
 
-A full-stack grocery delivery web application built with:
-- **Frontend**: HTML, CSS, JavaScript (Vanilla) — dark "mission control" sidebar theme with an orange/teal rocket brand
-- **Backend**: Node.js + Express.js
-- **Database**: MongoDB (via Mongoose)
+Rocket Delivery is a full-stack grocery delivery web app built with HTML, CSS, JavaScript, Node.js, Express, and MongoDB. It lets users browse groceries, add items to a cart, place orders, apply coupon codes, and track deliveries. An admin dashboard is also included to manage products, orders, users, and coupons.
 
-This is a fully-featured, independently designed sibling of a grocery delivery app — same core feature set, entirely different visual design, layout, component structure, and code organization.
+## Tech Stack
+
+**Frontend**
+
+* HTML
+* CSS
+* JavaScript (Vanilla)
+
+**Backend**
+
+* Node.js
+* Express.js
+
+**Database**
+
+* MongoDB with Mongoose
 
 ---
 
-## 📁 Project Structure
+# Project Structure
 
-```
+```text
 rocket-delivery/
+│
 ├── frontend/
-│   ├── index.html              # Sidebar + topbar + bottom-nav shell
+│   ├── index.html
 │   ├── css/
-│   │   └── style.css           # All styles (rocket/space theme)
+│   │   └── style.css
 │   └── js/
-│       ├── app.js              # State, API helper, sidebar/topbar/routing
-│       ├── catalog.js          # Home & Shop pages, product cards
-│       ├── account.js          # Cart, Auth, Orders, Tracking, Ratings
-│       └── mission-control.js  # Admin panel ("Mission Control")
+│       ├── app.js
+│       ├── catalog.js
+│       ├── account.js
+│       └── mission-control.js
 │
 └── backend/
     ├── server.js
     ├── seed.js
-    ├── .env.example
     ├── package.json
-    ├── config/db.js
-    ├── models/{User,Product,Order,Coupon}.js
-    ├── routes/{auth,products,orders,coupons,admin}.js
-    └── middleware/auth.js
+    ├── .env.example
+    ├── config/
+    ├── models/
+    ├── routes/
+    └── middleware/
 ```
 
 ---
 
-## 🚀 Setup Instructions
+# Getting Started
 
-### Prerequisites
-- Node.js (v16+)
-- MongoDB running locally on port 27017 (or a MongoDB Atlas URI)
+## Requirements
 
-### 1. Backend Setup
+* Node.js (v16 or later)
+* MongoDB (Local or Atlas)
+
+---
+
+## Backend
+
 ```bash
 cd backend
 npm install
-cp .env.example .env   # adjust values if needed
-npm run seed            # seed products, coupons & demo accounts
-npm start                # or: npm run dev (auto-reload)
 ```
-Server runs at `http://localhost:5050`
 
-### 2. Frontend Setup
-No build step needed — just serve the static folder:
+Create a `.env` file from the example.
+
+```bash
+cp .env.example .env
+```
+
+Seed the database.
+
+```bash
+npm run seed
+```
+
+Start the server.
+
+```bash
+npm start
+```
+
+or
+
+```bash
+npm run dev
+```
+
+Backend URL:
+
+```
+http://localhost:5050
+```
+
+---
+
+## Frontend
+
+Go to the frontend folder.
+
 ```bash
 cd frontend
+```
+
+Run a simple local server.
+
+```bash
 npx serve .
-# or
+```
+
+or
+
+```bash
 python -m http.server 3000
 ```
-Open `http://localhost:3000` in your browser.
 
-> The frontend calls the API at `http://localhost:5050/api` (see `API_ROOT` in `frontend/js/app.js`). Update this if you deploy the backend elsewhere.
+Open:
 
----
+```
+http://localhost:3000
+```
 
-## 🔑 Demo Accounts
-
-| Role  | Email                        | Password  |
-|-------|-------------------------------|-----------|
-| Admin | admin@rocketdelivery.com      | admin123  |
-| User  | priya@example.com             | user123   |
-
-## 🎟️ Demo Promo Codes
-
-| Code        | Discount | Min Order |
-|-------------|----------|-----------|
-| BLASTOFF10  | 10% off  | ₹100      |
-| ORBIT50     | ₹50 off  | ₹300      |
-| ROCKET20    | 20% off  | ₹250      |
+If you deploy the backend somewhere else, update the API URL in `frontend/js/app.js`.
 
 ---
 
-## ✨ Features
+# Demo Login
 
-- **Crew accounts** — Register, Login, JWT sessions
-- **Product catalog** — 30 products across 10 categories, search & category filters
-- **Cargo Bay (cart)** — Add, adjust quantity with steppers, remove items
-- **Promo codes** — Apply codes at checkout, with smart "nearly eligible" suggestions
-- **Checkout wizard** — Two-step flow: delivery coordinates → review & confirm
-- **Live order tracking** — Horizontal animated rocket progress tracker with delivery pilot info
-- **Order rating** — Star rating + review after delivery
-- **Mission Control (Admin panel)**
-  - Dashboard with revenue/orders/crew/delivered stats
-  - Manage all orders + advance mission status
-  - Crew roster (all users)
-  - Create/toggle promo codes
-  - Delivery pilot fleet stats
+### Admin
+
+```
+Email: admin@rocketdelivery.com
+Password: admin123
+```
+
+### User
+
+```
+Email: priya@example.com
+Password: user123
+```
 
 ---
 
-## 🌐 API Endpoints
+# Coupon Codes
 
-| Method | Path                       | Description             | Auth     |
-|--------|-----------------------------|--------------------------|----------|
-| POST   | /api/auth/register          | Register user            | Public   |
-| POST   | /api/auth/login             | Login                    | Public   |
-| GET    | /api/products                | List products             | Public   |
-| GET    | /api/products/categories     | List categories           | Public   |
-| POST   | /api/orders                 | Place order               | User     |
-| GET    | /api/orders/my               | My orders                 | User     |
-| GET    | /api/orders/:id               | Order details              | User     |
-| PUT    | /api/orders/:id/rate           | Rate order                 | User     |
-| POST   | /api/coupons/validate         | Validate promo code          | User     |
-| GET    | /api/orders                 | All orders                | Admin    |
-| PUT    | /api/orders/:id/status         | Advance order status         | Admin    |
-| GET    | /api/coupons                 | All promo codes             | Admin    |
-| POST   | /api/coupons                 | Create promo code             | Admin    |
-| PUT    | /api/coupons/:id/toggle        | Toggle promo code             | Admin    |
-| GET    | /api/admin/users              | All users                  | Admin    |
-| GET    | /api/admin/stats              | Dashboard stats               | Admin    |
+| Code       | Offer   |
+| ---------- | ------- |
+| BLASTOFF10 | 10% off |
+| ORBIT50    | ₹50 off |
+| ROCKET20   | 20% off |
+
+---
+
+# Features
+
+### User
+
+* Register and login
+* Browse grocery products
+* Search and filter by category
+* Add items to cart
+* Update cart quantity
+* Apply coupon codes
+* Place orders
+* Track order status
+* Rate completed orders
+
+### Admin
+
+* View dashboard
+* Manage orders
+* Update delivery status
+* View users
+* Create and enable/disable coupons
+
+---
+
+# API Endpoints
+
+| Method | Endpoint                   | Description           |
+| ------ | -------------------------- | --------------------- |
+| POST   | `/api/auth/register`       | Register              |
+| POST   | `/api/auth/login`          | Login                 |
+| GET    | `/api/products`            | Get products          |
+| GET    | `/api/products/categories` | Get categories        |
+| POST   | `/api/orders`              | Place order           |
+| GET    | `/api/orders/my`           | User orders           |
+| GET    | `/api/orders/:id`          | Order details         |
+| PUT    | `/api/orders/:id/rate`     | Rate order            |
+| POST   | `/api/coupons/validate`    | Validate coupon       |
+| GET    | `/api/orders`              | All orders (Admin)    |
+| PUT    | `/api/orders/:id/status`   | Update order status   |
+| GET    | `/api/coupons`             | Get coupons (Admin)   |
+| POST   | `/api/coupons`             | Create coupon         |
+| PUT    | `/api/coupons/:id/toggle`  | Enable/Disable coupon |
+| GET    | `/api/admin/users`         | Get users             |
+| GET    | `/api/admin/stats`         | Dashboard statistics  |
+
+---
+
